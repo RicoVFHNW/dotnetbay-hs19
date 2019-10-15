@@ -1,0 +1,40 @@
+﻿<Window x:Class="DotNetBay.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DotNetBay.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Width="100" HorizontalAlignment="Left" Margin="10, 10, 10, 10" Click="SellButtonClick">New Auction</Button>
+
+        <Grid Grid.Row="1" Margin="10, 10, 10, 10">
+            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Name="AuctionsDataGrid" ItemsSource="{Binding Auctions}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Path=Title}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Start Price" Binding="{Binding Path=StartPrice, StringFormat=c}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Bids" Binding="{Binding Path=Bids.Count}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Current Price" Binding="{Binding Path=CurrentPrice, StringFormat=c}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Start Date" Binding="{Binding Path=StartDateTimeUtc}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="End Date" Binding="{Binding Path=EndDateTimeUtc}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Seller" Binding="{Binding Path=Seller.DisplayName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Current Winner" Binding="{Binding Path=ActiveBid.Bidder.DisplayName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Closed" Binding="{Binding Path=CloseDateTimeUtc}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Winner" Binding="{Binding Path=Winner}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Place Bid">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Background="DarkGreen" Click="BidButtonClick">Place</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>
