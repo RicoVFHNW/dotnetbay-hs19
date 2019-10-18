@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DotNetBay.Core;
+using DotNetBay.Core.Execution;
 using DotNetBay.Data.Entity;
 
 namespace DotNetBay.WPF
@@ -32,14 +34,39 @@ namespace DotNetBay.WPF
             this.auctionService = new AuctionService(App.MainRepository, new SimpleMemberService(App.MainRepository));
             this.Auctions = new ObservableCollection<Auction>(this.auctionService.GetAll());
             this.DataContext = this;
-        
-           
+
+            var app = Application.Current as App;
+            app.AuctionRunner.Auctioneer.AuctionEnded += AuctioneerOnAuctionEnded;
+            app.AuctionRunner.Auctioneer.AuctionStarted += AuctioneerOnAuctionStarted;
+            app.AuctionRunner.Auctioneer.BidDeclined += Auctioneer_BidDeclined;
+            app.AuctionRunner.Auctioneer.BidAccepted += Auctioneer_BidAccepted;
+
             InitializeComponent();
+        }
+
+        private void Auctioneer_BidAccepted(object sender, ProcessedBidEventArgs e)
+        {
+            Console.WriteLine("Bid Accepted");
+        }
+
+        private void Auctioneer_BidDeclined(object sender, ProcessedBidEventArgs e)
+        {
+            Console.WriteLine("Bid Declined");
+        }
+
+        private void AuctioneerOnAuctionStarted(object sender, AuctionEventArgs e)
+        {
+            Console.WriteLine("Auction Started");
+        }
+
+        private void AuctioneerOnAuctionEnded(object sender, AuctionEventArgs e)
+        {
+            Console.WriteLine("Auction Ended");
         }
 
         private void SellButtonClick(object sender, RoutedEventArgs e)
         {
-            var sellView = new SellView();
+            var sellView = new SellView(auctionService);
             sellView.ShowDialog();
         }
 

@@ -33,17 +33,17 @@
             <TextBlock Grid.Row="5" Grid.Column="0">End</TextBlock>
             <TextBlock Grid.Row="6" Grid.Column="0">Image</TextBlock>
 
-            <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
-            <TextBox Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
-            <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
-            <DatePicker Grid.Row="4" Grid.Column="1"></DatePicker>
-            <DatePicker Grid.Row="5" Grid.Column="1"></DatePicker>
-            <TextBox Name="ImageURL"  Grid.Row="6" Grid.Column="1" Margin="0, 0, 30, 0"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="TitleInput" TextChanged="validateInput"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Name="DescriptionInput" TextChanged="validateInput" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+            <TextBox Grid.Row="3" Grid.Column="1" Name="StartPriceInput" TextChanged="validateInput"></TextBox>
+            <DatePicker Grid.Row="4" Grid.Column="1" Name="StartDateInput" SelectedDateChanged="validateInput"></DatePicker>
+            <DatePicker Grid.Row="5" Grid.Column="1" Name="EndDateInput" SelectedDateChanged="validateInput"></DatePicker>
+            <TextBox Name="ImageURL"  Grid.Row="6" Grid.Column="1" Margin="0, 0, 30, 0" TextChanged="validateInput"></TextBox>
             <Button Grid.Row="6" Grid.Column="1" Width="25" HorizontalAlignment="Right" Click="OpenFile">...</Button>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 0, 5">
-            <Button Height="Auto" Padding="10, 0, 10, 0">Add Auction</Button>
-            <Button Height="Auto" Margin="10, 0, 0, 0" Padding="10, 0, 10, 0">Cancel</Button>
+            <Button Height="Auto" Padding="10, 0, 10, 0" Name="SaveButton" IsEnabled="{Binding Path=Createable, UpdateSourceTrigger=PropertyChanged }" Click="SaveAuction">Add Auction</Button>
+            <Button Height="Auto" Margin="10, 0, 0, 0" Padding="10, 0, 10, 0" Click="Cancel">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>

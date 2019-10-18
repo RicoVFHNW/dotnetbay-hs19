@@ -61,6 +61,7 @@
     <Compile Include="SellView.xaml.cs">
       <DependentUpon>SellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StatusConverter.cs" />
     <Page Include="BidView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
