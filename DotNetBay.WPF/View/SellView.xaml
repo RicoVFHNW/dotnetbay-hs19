@@ -1,9 +1,10 @@
-﻿<Window x:Class="DotNetBay.WPF.SellView"
+﻿<Window x:Class="DotNetBay.WPF.View.SellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DotNetBay.WPF"
+        xmlns:modelView="clr-namespace:DotNetBay.WPF.ModelView"
         mc:Ignorable="d"
         Title="SellView" Height="340" Width="600">
     <Grid Margin="10, 10, 10, 10">
@@ -33,17 +34,17 @@
             <TextBlock Grid.Row="5" Grid.Column="0">End</TextBlock>
             <TextBlock Grid.Row="6" Grid.Column="0">Image</TextBlock>
 
-            <TextBox Grid.Row="1" Grid.Column="1" Name="TitleInput" TextChanged="validateInput"></TextBox>
-            <TextBox Grid.Row="2" Grid.Column="1" Name="DescriptionInput" TextChanged="validateInput" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
-            <TextBox Grid.Row="3" Grid.Column="1" Name="StartPriceInput" TextChanged="validateInput"></TextBox>
-            <DatePicker Grid.Row="4" Grid.Column="1" Name="StartDateInput" SelectedDateChanged="validateInput"></DatePicker>
-            <DatePicker Grid.Row="5" Grid.Column="1" Name="EndDateInput" SelectedDateChanged="validateInput"></DatePicker>
-            <TextBox Name="ImageURL"  Grid.Row="6" Grid.Column="1" Margin="0, 0, 30, 0" TextChanged="validateInput"></TextBox>
-            <Button Grid.Row="6" Grid.Column="1" Width="25" HorizontalAlignment="Right" Click="OpenFile">...</Button>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding StartPrice, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <DatePicker Grid.Row="4" Grid.Column="1" SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            <DatePicker Grid.Row="5" Grid.Column="1" SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            <TextBox Grid.Row="6" Grid.Column="1" Margin="0, 0, 30, 0" Text="{Binding ImageUrl, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <Button Grid.Row="6" Grid.Column="1" Width="25" HorizontalAlignment="Right" Command="{Binding ChooseImageUrl, UpdateSourceTrigger=PropertyChanged}">...</Button>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 0, 5">
-            <Button Height="Auto" Padding="10, 0, 10, 0" Name="SaveButton" IsEnabled="{Binding Path=Createable, UpdateSourceTrigger=PropertyChanged }" Click="SaveAuction">Add Auction</Button>
-            <Button Height="Auto" Margin="10, 0, 0, 0" Padding="10, 0, 10, 0" Click="Cancel">Cancel</Button>
+            <Button Height="Auto" Padding="10, 0, 10, 0" Name="SaveButton" Command="{Binding SaveAuction}">Add Auction</Button>
+            <Button Height="Auto" Margin="10, 0, 0, 0" Padding="10, 0, 10, 0">Cancel</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -1,47 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DotNetBay.Core;
 using DotNetBay.Core.Execution;
 using DotNetBay.Data.Entity;
+using DotNetBay.WPF.Command;
+using DotNetBay.WPF.View;
 
-namespace DotNetBay.WPF
+namespace DotNetBay.WPF.ModelView
 {
-    /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    class MainViewModel: ViewModelBase
     {
-        public ObservableCollection<Auction> Auctions { get; set; } = new ObservableCollection<Auction>();
-        private AuctionService auctionService;
+        public ObservableCollection<AuctionViewModel> Auctions { get; set; } = new ObservableCollection<AuctionViewModel>();
+        private AuctionService auctionService { get; set; }
 
-        public MainWindow()
+        public MainViewModel()
         {
             this.auctionService = new AuctionService(App.MainRepository, new SimpleMemberService(App.MainRepository));
-            this.Auctions = new ObservableCollection<Auction>(this.auctionService.GetAll());
-            this.DataContext = this;
+            IQueryable<Auction> auctions = this.auctionService.GetAll();
+
+            foreach (var auction in auctions)
+            {
+                Auctions.Add(new AuctionViewModel(auction));
+            }
 
             var app = Application.Current as App;
             app.AuctionRunner.Auctioneer.AuctionEnded += AuctioneerOnAuctionEnded;
             app.AuctionRunner.Auctioneer.AuctionStarted += AuctioneerOnAuctionStarted;
             app.AuctionRunner.Auctioneer.BidDeclined += Auctioneer_BidDeclined;
             app.AuctionRunner.Auctioneer.BidAccepted += Auctioneer_BidAccepted;
-
-            InitializeComponent();
         }
 
         private void Auctioneer_BidAccepted(object sender, ProcessedBidEventArgs e)
@@ -64,16 +56,21 @@ namespace DotNetBay.WPF
             Console.WriteLine("Auction Ended");
         }
 
-        private void SellButtonClick(object sender, RoutedEventArgs e)
+        public ICommand OpenSellView
         {
-            var sellView = new SellView(auctionService);
+            get { return new RelayCommand(OpenSellViewExecute, CanOpenSellViewExecute);}
+        }
+
+        void OpenSellViewExecute()
+        {
+            var sellView = new SellView();
             sellView.ShowDialog();
         }
 
-        private void BidButtonClick(object sender, RoutedEventArgs e)
+
+        bool CanOpenSellViewExecute()
         {
-            var bidView = new BidView(((Button)sender).DataContext as Auction);
-            bidView.ShowDialog();
+            return true;
         }
     }
 }
